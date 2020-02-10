@@ -35,9 +35,8 @@ router
   })
   .post('/video/:filename', ctx => {
     const content = Base64.decode(Object.keys(ctx.request.body)[0]);
-    console.log(content);
     fs.appendFileSync(path.join(__dirname, `/video/${ctx.params.filename}`), `${content}\r\n`);
-    ctx.body = JSON.stringify({ state: 'ok' });
+    ctx.body = { res: true };
   });
 
 app
