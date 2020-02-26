@@ -37,8 +37,9 @@ router
       ctx.body = { res: false };
     }
   })
-  .post('/video/:filename', ctx => {
-    const content = Base64.decode(Object.keys(ctx.request.body)[0]);
+  .post('/video/:filename', async ctx => {
+    const buffer = await Utils.getBuffer(ctx);
+    const content = Base64.decode(buffer.toString('utf-8'));
     fs.appendFileSync(path.join(__dirname, `/video/${ctx.params.filename}`), `${content}\r\n`);
     ctx.body = { res: true };
   })

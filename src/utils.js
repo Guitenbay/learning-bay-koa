@@ -15,4 +15,22 @@ async function stat(file) {
   });
 }
 
-module.exports = { stat }
+function getBuffer(ctx) {
+  return new Promise((resolve, reject) => {
+    try {
+      let buf = [];
+      let allData;
+      ctx.req.on("data",(data)=>{
+          buf.push(data);
+      });
+      ctx.req.on("end",(data)=>{
+        allData = Buffer.concat(buf);
+        resolve(allData);
+      })
+    } catch(err) {
+      reject(err);
+    }
+  });
+}
+
+module.exports = { stat, getBuffer }
