@@ -27,7 +27,7 @@ router
   .get('/', (ctx, next) => {
     ctx.body = 'Hello world';
   })
-  .get('/video/:filename', async (ctx) => {
+  .get('/video/:filename', async ctx => {
     const fpath = path.join(__dirname, ctx.path);
     const fstat = await Utils.stat(fpath);
     if (fstat.isFile()) {
@@ -40,8 +40,31 @@ router
   .post('/video/:filename', async ctx => {
     const buffer = await Utils.getBuffer(ctx);
     const content = Base64.decode(buffer.toString('utf-8'));
-    fs.appendFileSync(path.join(__dirname, `/video/${ctx.params.filename}`), `${content}\r\n`);
+    try {
+      fs.appendFileSync(path.join(__dirname, `/video/${ctx.params.filename}`), `${content}\r\n`);
+    } catch(err) { console.error(err); ctx.body = {res: false} }
     ctx.body = { res: true };
+  })
+  .get('/audio/:filename', async ctx => {
+    const fpath = path.join(__dirname, ctx.path);
+    const fstat = await Utils.stat(fpath);
+    if (fstat.isFile()) {
+      ctx.type = extname(ctx.params.filename);
+      ctx.body = fs.createReadStream(fpath);
+    } else ctx.body = { res: false };
+  })
+  .post('/audio/:filename', async ctx => {
+    const buffer = await Utils.getBuffer(ctx); 
+    // const ws = fs.createWriteStream();
+    // const rs = fs.createReadStream(buffer);
+    try { 
+      fs.writeFileSync(path.join(__dirname, `/audio/${ctx.params.filename}`), buffer); 
+      ctx.body = { res: true }; 
+    } catch(err) {
+      console.error(err);
+      // rs.close(); ws.close();
+      ctx.body = { res: false };
+    }
   })
   .post('/code/:extname/:filename', async ctx => {
     // /code/:extname/:filename?uid=:uid
