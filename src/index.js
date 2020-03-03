@@ -73,16 +73,19 @@ router
     const totalname = `${filename}-${uid}.${extname}`;
     const totalPath = path.join(__dirname, `/cache-code/${totalname}`);
     const codeContent = Base64.decode(ctx.request.body.code);
-    fs.writeFileSync(totalPath, `${codeContent}`);
+    // 创建并写入
+    fs.writeFileSync(totalPath, `try{eval(\`${codeContent}\`)}catch(err){console.log(err)}`);
     let output = '';
     try {
       output = cp.execSync(`node ${totalname}`, {
         cwd: path.join(__dirname, `/cache-code/`), timeout: 3000, windowsHide: true, encoding: 'utf8'
       });
     } catch(error) {
-      output = error.toString().split('\r\n\r\n')[1].slice(0, 100);
+      // output = error.toString().split('\r\n\r\n')[1].slice(0, 100);
+      output = error.toString()
     }
     ctx.body = { res: true, result: output };
+    // 删除文件
     fs.unlinkSync(totalPath);
   });
 
