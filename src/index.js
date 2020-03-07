@@ -74,14 +74,16 @@ router
     const totalPath = path.join(__dirname, `/cache-code/${totalname}`);
     const codeContent = Base64.decode(ctx.request.body.code);
     // 创建并写入
-    fs.writeFileSync(totalPath, `try{eval(\`${codeContent}\`)}catch(err){console.log(err)}`);
+    fs.writeFileSync(totalPath, `try{${codeContent}}catch(err){
+      const arr = err.stack.match(/^[^\\(\\)]*\\([^\\(\\)]*:(\\d+):(\\d+)\\)/);
+      if (arr[1] === '1') arr[2] -= 4;
+      console.log(\`\${err.name}: \${err.message} in line \${arr[1]}, column \${arr[2]}\`);}`);
     let output = '';
     try {
       output = cp.execSync(`node ${totalname}`, {
         cwd: path.join(__dirname, `/cache-code/`), timeout: 3000, windowsHide: true, encoding: 'utf8'
       });
     } catch(error) {
-      // output = error.toString().split('\r\n\r\n')[1].slice(0, 100);
       output = error.toString()
     }
     ctx.body = { res: true, result: output };
