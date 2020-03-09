@@ -1,11 +1,13 @@
 # learning-bar Koa
 
+> Using PROT: 3000
+
 ## Usage
 
-1. install
-	
-    	npm i
+1. Install
+				
+		npm i
 
-2. run
+2. Run
 	
-    	npm start
+		npm start
