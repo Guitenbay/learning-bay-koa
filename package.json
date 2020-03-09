@@ -5,11 +5,13 @@
   "main": "index.js",
   "dependencies": {
     "@koa/router": "^8.0.7",
+    "http": "0.0.0",
     "js-base64": "^2.5.1",
     "koa": "^2.11.0",
     "koa-body": "^4.1.1",
     "koa-cors": "0.0.16",
-    "koa-logger": "^3.2.1"
+    "koa-logger": "^3.2.1",
+    "socket.io": "^2.3.0"
   },
   "scripts": {
     "start": "node ./src/index.js"
