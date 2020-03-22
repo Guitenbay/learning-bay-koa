@@ -1,6 +1,6 @@
 # learning-bar Koa
 
-> Using PROT: 3000
+> Using PORT: 3000
 
 ## Usage
 
