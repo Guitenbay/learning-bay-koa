@@ -37,7 +37,6 @@ router
     // } else {
       const resp = await axios.post(`${Config.fusekiURL}/user/login`, ctx.request.body, {headers: {'Content-Type': 'application/json'}});
       const { res, data } = resp.data;
-      // console.log(data);
       if (res) {
         ctx.session.userInfo = data;
       }
