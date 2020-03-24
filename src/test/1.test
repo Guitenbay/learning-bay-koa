@@ -1,0 +1,20 @@
+[{
+  "learningbay_knowledge": "ke1",
+  "type": "ExpressionStatement", 
+  "expression": {
+  "type": "CallExpression",
+  "callee": {
+      "type": "MemberExpression",
+      "object": {
+          "name": "console"
+      },
+      "property": {
+          "name": "log"
+      }
+  },
+  "arguments": [
+      {
+          "value": "hellp"
+      }
+  ]
+}}]
