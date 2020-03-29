@@ -1,5 +1,5 @@
 [{
-  "learningbay_knowledge": "ke1",
+  "learningbay_knowledge": "http://biki.wiki/learning-bay/knowledge-element/ke1",
   "type": "ExpressionStatement", 
   "expression": {
   "type": "CallExpression",

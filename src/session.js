@@ -39,6 +39,16 @@ function setSessionRoute(app, router) {
       ctx.session = undefined;
       ctx.body = { res: true };
     })
+    .get('/user/knowledge/graph', async ctx => {
+      if (ctx.session.userInfo) {
+        const { courseUri } = ctx.request.query;
+        const resp = await axios.get(Config.fusekiURL+"/user/knowledge/graph", 
+          { params: { userUri: ctx.session.userInfo.uri, courseUri } });
+        ctx.body = resp.data;
+      } else {
+        ctx.body = { res: false };
+      }
+    })
     // 分析代码
     .post('/code/analyse', async ctx => {
       if (!ctx.session.userInfo) ctx.body = { res: false, data: "未登录，无法解锁此功能" }
@@ -50,10 +60,28 @@ function setSessionRoute(app, router) {
           ctx.type = extname(testFilename);
           const checks = JSON.parse(fs.readFileSync(fpath));
           const analyseResult = analyse(code, checks);
-          ctx.body = { res: true, data: analyseResult };
-        } else {
-          ctx.body = { res: false };
+          let knowledgeStates = [];
+          const userUri = ctx.session.userInfo.uri;
+          // 若通过检验，则设置知识状态为 3
+          if (analyseResult.checkResult) knowledgeStates = analyseResult.updateKeList.map(uri => ({uri, state: 3}));
+          // 否则设为 -1，表示从原有状态减一
+          else knowledgeStates = analyseResult.updateKeList.map(uri => ({uri, state: -1}));
+          // 更新知识状态
+          const params = Object.assign({ userUri }, { knowledgeStates });
+          const resp = await axios.post(Config.fusekiURL+"/user/knowledge-state", params, {headers: {'Content-Type': 'application/json'}});
+          // 若成功更新知识状态
+          if (resp.data.res) {
+            if (analyseResult.checkResult) {
+              const { data } = await axios.get(Config.fusekiURL+"/recommend", {params: {uri: userUri}});
+              ctx.body = { res: true, data: { result: analyseResult.checkResult, list: data.data }};
+            } else {
+              const { data } = await axios.get(Config.fusekiURL+"/recommend/review", {params: {uri: userUri}});
+              ctx.body = { res: true, data: { result: analyseResult.checkResult, list: data.data }};
+            }
+            return;
+          }
         }
+        ctx.body = { res: false };
       }
     })
   return router;

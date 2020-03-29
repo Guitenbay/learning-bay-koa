@@ -56,9 +56,9 @@ function analyse(code, checks) {
     } else {
       checkResult = true;
     }
-    return { checkResult, updateKeList};
+    return { checkResult, updateKeList };
   } catch(err) {
-    return { checkResult, updateKeList};
+    return { checkResult, updateKeList };
   }
 }
 
