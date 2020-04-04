@@ -45,20 +45,29 @@ function getBuffer(ctx) {
     ThrowStatement | TryStatement | VariableDeclaration |
     WhileStatement | WithStatement;
  */
+/**
+ * 
+ * @param {*} code 
+ * @param {*} checks 
+ * @return { matchedKeList: 检测到的KElementUri数组, mismatchedKeList: 未检测到的KElementUri数组 }
+ */
 function analyse(code, checks) {
-  let updateKeList = checks.map(({learningbay_knowledge}) => learningbay_knowledge);
-  let checkResult = false;
+  let checkKeList = checks.map(({learningbay_knowledge}) => learningbay_knowledge);
+  let mismatchedKeList = matchedKeList = [];
   try {
-    const stmts = esprima.parseScript(code, {tolerant: true}).body;
+    const stmts = esprima.parseScript(code).body;
     const mismatched = matchStmts(stmts, checks);
     if (mismatched.length !== 0) {
-      updateKeList = mismatched.map(({learningbay_knowledge}) => learningbay_knowledge);
-    } else {
-      checkResult = true;
+      mismatchedKeList = mismatched.map(({learningbay_knowledge}) => learningbay_knowledge);
     }
-    return { checkResult, updateKeList };
+    matchedKeList = checkKeList.filter(checkUri => {
+      return !mismatchedKeList.includes(checkUri);
+    })
+    return { matchedKeList, mismatchedKeList };
   } catch(err) {
-    return { checkResult, updateKeList };
+    // 若 code 本身有问题 matchedKeList 为空
+    mismatchedKeList = checkKeList;
+    return { matchedKeList, mismatchedKeList };
   }
 }
 

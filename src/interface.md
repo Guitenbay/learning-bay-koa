@@ -44,10 +44,29 @@ result:
   res: boolean,
   data: {
     result: boolean,// 表示分析结果: 若为 true, data 是推荐学习课程；若为 false, data 是推荐复习课程
-    list: [{
-      // lessons
-    }]
   }
+}
+```
+5. url: `/recommend` GET
+> 获取下阶段课时
+result:
+```json
+{
+  res: boolean,
+  data: [{
+    // lesson
+  }]
+}
+```
+6. url: `/recommend/review` GET
+> 获取复习课时
+result:
+```json
+{
+  res: boolean,
+  data: [{
+    // lesson
+  }]
 }
 ```
 

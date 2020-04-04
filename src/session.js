@@ -17,16 +17,16 @@ function setSessionRoute(app, router) {
   }))
   router
     .post('/login', async ctx => {
-      // if (ctx.session.userInfo) {
-      //   ctx.body = { res: false, data: "您已登录" }
-      // } else {
+      if (ctx.session.userInfo) {
+        ctx.body = { res: false, data: "您已登录" }
+      } else {
         const resp = await axios.post(`${Config.fusekiURL}/user/login`, ctx.request.body, {headers: {'Content-Type': 'application/json'}});
         const { res, data } = resp.data;
         if (res) {
           ctx.session.userInfo = data;
         }
         ctx.body = { res };
-      // }
+      }
     })
     .get('/session', async ctx => {
       if (ctx.session.userInfo) {
@@ -56,32 +56,47 @@ function setSessionRoute(app, router) {
         const { code, testFilename } = ctx.request.body;
         const fpath = path.join(__dirname, "/test/", testFilename);
         const fstat = await stat(fpath);
-        if (fstat.isFile()) {
-          ctx.type = extname(testFilename);
-          const checks = JSON.parse(fs.readFileSync(fpath));
-          const analyseResult = analyse(code, checks);
-          let knowledgeStates = [];
-          const userUri = ctx.session.userInfo.uri;
-          // 若通过检验，则设置知识状态为 3
-          if (analyseResult.checkResult) knowledgeStates = analyseResult.updateKeList.map(uri => ({uri, state: 3}));
-          // 否则设为 -1，表示从原有状态减一
-          else knowledgeStates = analyseResult.updateKeList.map(uri => ({uri, state: -1}));
-          // 更新知识状态
-          const params = Object.assign({ userUri }, { knowledgeStates });
-          const resp = await axios.post(Config.fusekiURL+"/user/knowledge-state", params, {headers: {'Content-Type': 'application/json'}});
-          // 若成功更新知识状态
-          if (resp.data.res) {
-            if (analyseResult.checkResult) {
-              const { data } = await axios.get(Config.fusekiURL+"/recommend", {params: {uri: userUri}});
-              ctx.body = { res: true, data: { result: analyseResult.checkResult, list: data.data }};
-            } else {
-              const { data } = await axios.get(Config.fusekiURL+"/recommend/review", {params: {uri: userUri}});
-              ctx.body = { res: true, data: { result: analyseResult.checkResult, list: data.data }};
-            }
-            return;
-          }
+        if (!fstat.isFile()) {
+          ctx.body = { res: false };
+          return;
         }
-        ctx.body = { res: false };
+        const checks = JSON.parse(fs.readFileSync(fpath));
+        const { matchedKeList, mismatchedKeList } = analyse(code, checks);
+        const userUri = ctx.session.userInfo.uri;
+        let knowledgeStates = [];
+        // 若通过检验的知识点，设置知识状态为 3
+        matchedKnowledgeStates = matchedKeList.map(uri => ({uri, state: 3}));
+        // 未通过检测的设为 -1，表示从原有状态减一
+        mismatchedKnowledgeStates = mismatchedKeList.map(uri => ({uri, state: -1}));
+        
+        knowledgeStates = matchedKnowledgeStates.concat(mismatchedKnowledgeStates);
+        // 更新知识状态
+        const params = Object.assign({ userUri }, { knowledgeStates });
+        const resp = await axios.post(Config.fusekiURL+"/user/knowledge-state", params, {headers: {'Content-Type': 'application/json'}});
+        if (!resp.data.res) {
+          ctx.body = { res: false };
+          return;
+        }
+        ctx.body = { res: true, data: { result: mismatchedKeList.length === 0 } };
+        return;
+      }
+    })
+    .get('/recommend', async ctx => {
+      if (ctx.session.userInfo) {
+        const userUri = ctx.session.userInfo.uri;
+        const { data } = await axios.get(Config.fusekiURL+"/recommend", {params: {uri: userUri}});
+        ctx.body = data;
+      } else {
+        ctx.body = { res: false, data: "未登录，无法解锁此功能" }
+      }
+    })
+    .get('/recommend/review', async ctx => {
+      if (ctx.session.userInfo) {
+        const userUri = ctx.session.userInfo.uri;
+        const { data } = await axios.get(Config.fusekiURL+"/recommend/review", {params: {uri: userUri}});
+        ctx.body = data;
+      } else {
+        ctx.body = { res: false, data: "未登录，无法解锁此功能" }
       }
     })
   return router;
