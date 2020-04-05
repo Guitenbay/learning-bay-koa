@@ -55,7 +55,7 @@ function analyse(code, checks) {
   let checkKeList = checks.map(({learningbay_knowledge}) => learningbay_knowledge);
   let mismatchedKeList = matchedKeList = [];
   try {
-    const stmts = esprima.parseScript(code).body;
+    const stmts = esprima.parseScript(code, {tolerant: true}).body;
     const mismatched = matchStmts(stmts, checks);
     if (mismatched.length !== 0) {
       mismatchedKeList = mismatched.map(({learningbay_knowledge}) => learningbay_knowledge);
