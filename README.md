@@ -13,5 +13,11 @@
 		npm i
 
 2. Run
-	
-		npm start
+
+	- 先开启 redis 数据库
+
+			npm run redis
+
+	- 再运行 Koa
+
+			npm start
