@@ -47,7 +47,7 @@ result:
   }
 }
 ```
-5. url: `/recommend` GET
+5. url: `/recommend?courseUri` GET
 > 获取下阶段课时
 result:
 ```json
@@ -58,7 +58,7 @@ result:
   }]
 }
 ```
-6. url: `/recommend/review` GET
+6. url: `/recommend/review?courseUri` GET
 > 获取复习课时
 result:
 ```json
@@ -69,6 +69,18 @@ result:
   }]
 }
 ```
+7. url: `/user/punch-in` POST
+> 课时学完打卡
+```json
+{
+  res: boolean,
+  data: [{
+    uri: string, // 知识元 uri
+    state: 1
+  }]
+}
+```
+
 
 ## Without Session
 1. url: `/video/:filename` GET

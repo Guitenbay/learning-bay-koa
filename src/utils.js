@@ -45,8 +45,9 @@ function getBuffer(ctx) {
     ThrowStatement | TryStatement | VariableDeclaration |
     WhileStatement | WithStatement;
  */
+
 /**
- * 
+ * 分析代码函数
  * @param {*} code 
  * @param {*} checks 
  * @return { matchedKeList: 检测到的KElementUri数组, mismatchedKeList: 未检测到的KElementUri数组 }
@@ -55,7 +56,7 @@ function analyse(code, checks) {
   let checkKeList = checks.map(({learningbay_knowledge}) => learningbay_knowledge);
   let mismatchedKeList = matchedKeList = [];
   try {
-    const stmts = esprima.parseScript(code, {tolerant: true}).body;
+    const stmts = esprima.parseScript(code, {tolerant: true, comment: true}).body;
     const mismatched = matchStmts(stmts, checks);
     if (mismatched.length !== 0) {
       mismatchedKeList = mismatched.map(({learningbay_knowledge}) => learningbay_knowledge);
@@ -71,6 +72,11 @@ function analyse(code, checks) {
   }
 }
 
+/**
+ * 匹配句子
+ * @param {*} stmts : 句子
+ * @param {*} checks : 检测数据
+ */
 function matchStmts(stmts, checks) {
   for (let i=0; i<stmts.length; i++) {
     if (checks.length <= 0) break;
@@ -85,11 +91,18 @@ function matchStmts(stmts, checks) {
   return checks;
 }
 
+/**
+ * 检测句子函数
+ * @param {*} stmts : 句子
+ * @param {*} checks : 检测数据
+ */
 function checkStmt(stmt, check) {
   let result = true;
   for (const key of Object.keys(check)) {
-    if (/^learningbay_.*/.test(key)) continue;
-    if (!isObject(check[key])) {
+    if (/^learningbay_knowledge.*/.test(key)) continue;
+    if (/^learningbay_type.*/.test(key)) {
+      result = Object.is(typeof stmt["value"], check[key]);
+    } else if (!isObject(check[key])) {
       result = Object.is(stmt[key], check[key]);
     } else {
       result = checkStmt(stmt[key], check[key]);

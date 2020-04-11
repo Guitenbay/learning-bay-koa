@@ -1,0 +1,24 @@
+[
+    {
+        "learningbay_knowledge": "http://biki.wiki/learning-bay/knowledge-element/jske3",
+        "type": "ExpressionStatement",
+        "expression": {
+            "type": "CallExpression",
+            "callee": {
+                "type": "MemberExpression",
+                "object": {
+                    "name": "console"
+                },
+                "property": {
+                    "name": "log"
+                }
+            },
+            "arguments": [
+                {
+                    "type": "Literal",
+                    "learningbay_type": "number"
+                }
+            ]
+        }
+    }
+]

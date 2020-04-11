@@ -51,40 +51,42 @@ function setSessionRoute(app, router) {
     })
     // 分析代码
     .post('/code/analyse', async ctx => {
-      if (!ctx.session.userInfo) ctx.body = { res: false, data: "未登录，无法解锁此功能" }
-      else {
-        const { code, testFilename } = ctx.request.body;
-        const fpath = path.join(__dirname, "/test/", testFilename);
-        const fstat = await stat(fpath);
-        if (!fstat.isFile()) {
-          ctx.body = { res: false };
-          return;
-        }
-        const checks = JSON.parse(fs.readFileSync(fpath));
-        const { matchedKeList, mismatchedKeList } = analyse(code, checks);
-        const userUri = ctx.session.userInfo.uri;
-        let knowledgeStates = [];
-        // 若通过检验的知识点，设置知识状态为 3
-        matchedKnowledgeStates = matchedKeList.map(uri => ({uri, state: 3}));
-        // 未通过检测的设为 -1，表示从原有状态减一
-        mismatchedKnowledgeStates = mismatchedKeList.map(uri => ({uri, state: -1}));
-        
-        knowledgeStates = matchedKnowledgeStates.concat(mismatchedKnowledgeStates);
-        // 更新知识状态
-        const params = Object.assign({ userUri }, { knowledgeStates });
-        const resp = await axios.post(Config.fusekiURL+"/user/knowledge-state", params, {headers: {'Content-Type': 'application/json'}});
-        if (!resp.data.res) {
-          ctx.body = { res: false };
-          return;
-        }
-        ctx.body = { res: true, data: { result: mismatchedKeList.length === 0 } };
+      if (!ctx.session.userInfo) {
+        ctx.body = { res: false, data: "未登录，无法解锁此功能" };
         return;
       }
+      const { code, testFilename } = ctx.request.body;
+      const fpath = path.join(__dirname, "/test/", testFilename);
+      const fstat = await stat(fpath);
+      if (!fstat.isFile()) {
+        ctx.body = { res: false };
+        return;
+      }
+      const checks = JSON.parse(fs.readFileSync(fpath));
+      const { matchedKeList, mismatchedKeList } = analyse(code, checks);
+      const userUri = ctx.session.userInfo.uri;
+      let knowledgeStates = [];
+      // 若通过检验的知识点，设置知识状态为 3
+      matchedKnowledgeStates = matchedKeList.map(uri => ({uri, state: 3}));
+      // 未通过检测的设为 -1，表示从原有状态减一
+      mismatchedKnowledgeStates = mismatchedKeList.map(uri => ({uri, state: -1}));
+      
+      knowledgeStates = matchedKnowledgeStates.concat(mismatchedKnowledgeStates);
+      // 更新知识状态
+      const params = Object.assign({ userUri }, { knowledgeStates });
+      const resp = await axios.post(Config.fusekiURL+"/user/knowledge-state/code", params, {headers: {'Content-Type': 'application/json'}});
+      if (!resp.data.res) {
+        ctx.body = { res: false };
+        return;
+      }
+      ctx.body = { res: true, data: { result: mismatchedKeList.length === 0 } };
+      return;
     })
     .get('/recommend', async ctx => {
       if (ctx.session.userInfo) {
+        const { courseUri } = ctx.request.query;
         const userUri = ctx.session.userInfo.uri;
-        const { data } = await axios.get(Config.fusekiURL+"/recommend", {params: {uri: userUri}});
+        const { data } = await axios.get(Config.fusekiURL+"/recommend", {params: {uri: userUri, courseUri}});
         ctx.body = data;
       } else {
         ctx.body = { res: false, data: "未登录，无法解锁此功能" }
@@ -92,12 +94,27 @@ function setSessionRoute(app, router) {
     })
     .get('/recommend/review', async ctx => {
       if (ctx.session.userInfo) {
+        const { courseUri } = ctx.request.query;
         const userUri = ctx.session.userInfo.uri;
-        const { data } = await axios.get(Config.fusekiURL+"/recommend/review", {params: {uri: userUri}});
+        const { data } = await axios.get(Config.fusekiURL+"/recommend/review", {params: {uri: userUri, courseUri}});
         ctx.body = data;
       } else {
         ctx.body = { res: false, data: "未登录，无法解锁此功能" }
       }
+    })
+    .post('/user/punch-in', async ctx => {
+      if (!ctx.session.userInfo) {
+        ctx.body = { res: false, data: "未登录，无法解锁此功能" };
+        return;
+      }
+      const params = ctx.request.body;
+      params.userUri = ctx.session.userInfo.uri;
+      const { data } = await axios.post(
+        Config.fusekiURL+'/user/knowledge-state/lesson',
+        params,
+        {headers: {'Content-Type': 'application/json'}}
+      );
+      ctx.body = data;
     })
   return router;
 }
