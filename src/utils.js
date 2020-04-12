@@ -53,13 +53,16 @@ function getBuffer(ctx) {
  * @return { matchedKeList: 检测到的KElementUri数组, mismatchedKeList: 未检测到的KElementUri数组 }
  */
 function analyse(code, checks) {
-  let checkKeList = checks.map(({learningbay_knowledge}) => learningbay_knowledge);
+  let checkKeList = uniqueArr(checks.map(({learningbay_knowledge}) => learningbay_knowledge));
   let mismatchedKeList = matchedKeList = [];
   try {
-    const stmts = esprima.parseScript(code, {tolerant: true, comment: true}).body;
+    const stmts = esprima.parseScript(code, {tolerant: true, attachComment: true}).body;
+    // const esprimaAnalyse = esprima.parseScript(code, {tolerant: true, comment: true});
+    // const stmts = esprimaAnalyse.body;
+    // console.log(esprimaAnalyse.comments);
     const mismatched = matchStmts(stmts, checks);
     if (mismatched.length !== 0) {
-      mismatchedKeList = mismatched.map(({learningbay_knowledge}) => learningbay_knowledge);
+      mismatchedKeList = uniqueArr(mismatched.map(({learningbay_knowledge}) => learningbay_knowledge));
     }
     matchedKeList = checkKeList.filter(checkUri => {
       return !mismatchedKeList.includes(checkUri);
@@ -70,6 +73,15 @@ function analyse(code, checks) {
     mismatchedKeList = checkKeList;
     return { matchedKeList, mismatchedKeList };
   }
+}
+
+function uniqueArr(arr) {
+  const set = new Set(arr);
+  result = [];
+  set.forEach(value => {
+    result.push(value);
+  })
+  return result;
 }
 
 /**
@@ -84,6 +96,8 @@ function matchStmts(stmts, checks) {
       if (checkStmt(stmts[i], checks[j])) {
         // 匹配则移除
         checks.splice(j, 1);
+        // stmts 重新开始
+        i=-1;
         break;
       }
     }
@@ -99,9 +113,11 @@ function matchStmts(stmts, checks) {
 function checkStmt(stmt, check) {
   let result = true;
   for (const key of Object.keys(check)) {
-    if (/^learningbay_knowledge.*/.test(key)) continue;
-    if (/^learningbay_type.*/.test(key)) {
+    if (/^learningbay_knowledge$/.test(key)) continue;
+    if (/^learningbay_type$/.test(key)) {
       result = Object.is(typeof stmt["value"], check[key]);
+    } else if (/^learningbay_include_string$/.test(key)) {
+      result = stmt["value"].includes(check[key]);
     } else if (!isObject(check[key])) {
       result = Object.is(stmt[key], check[key]);
     } else {

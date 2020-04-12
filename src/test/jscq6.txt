@@ -1,0 +1,48 @@
+[
+    {
+        "learningbay_knowledge": "http://biki.wiki/learning-bay/knowledge-element/jske3",
+        "type": "ExpressionStatement",
+        "expression": {
+            "type": "CallExpression",
+            "callee": {
+                "type": "MemberExpression",
+                "object": {
+                    "name": "console"
+                },
+                "property": {
+                    "name": "log"
+                }
+            }
+        }
+    },
+    {
+        "learningbay_knowledge": "http://biki.wiki/learning-bay/knowledge-element/jske12",
+        "type": "ExpressionStatement",
+        "expression": {
+            "arguments": [
+                {
+                    "type": "MemberExpression",
+                    "object": {},
+                    "property": {}
+                }
+            ]
+        }
+    },
+    {
+        "learningbay_knowledge": "http://biki.wiki/learning-bay/knowledge-element/jske13",
+        "type": "ExpressionStatement",
+        "expression": {
+            "arguments": [
+                {
+                    "type": "MemberExpression",
+                    "object": {
+                        "value": "Teaching the world how to code"
+                    },
+                    "property": {
+                        "name": "length"
+                    }
+                }
+            ]
+        }
+    }
+]

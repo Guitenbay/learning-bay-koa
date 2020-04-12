@@ -1,0 +1,77 @@
+[
+    {
+        "learningbay_knowledge": "http://biki.wiki/learning-bay/knowledge-element/jske3",
+        "type": "ExpressionStatement",
+        "expression": {
+            "type": "CallExpression",
+            "callee": {
+                "type": "MemberExpression",
+                "object": {
+                    "name": "console"
+                },
+                "property": {
+                    "name": "log"
+                }
+            }
+        }
+    },
+    {
+        "learningbay_knowledge": "http://biki.wiki/learning-bay/knowledge-element/jske14",  
+        "type": "ExpressionStatement",
+        "expression": {
+            "arguments": [
+                {
+                    "type": "CallExpression",
+                    "callee": {
+                        "type": "MemberExpression",
+                        "object": {},
+                        "property": {}
+                    },
+                    "arguments": []
+                }
+            ]
+        }
+    },
+    {
+        "learningbay_knowledge": "http://biki.wiki/learning-bay/knowledge-element/jske15",
+        "type": "ExpressionStatement",
+        "expression": {
+            "arguments": [
+                {
+                    "type": "CallExpression",
+                    "callee": {
+                        "type": "MemberExpression",
+                        "object": {
+                            "learningbay_type": "string"
+                        },
+                        "property": {
+                            "name": "toUpperCase"
+                        }
+                    },
+                    "arguments": []
+                }
+            ]
+        }
+    },
+    {
+        "learningbay_knowledge": "http://biki.wiki/learning-bay/knowledge-element/jske15",
+        "type": "ExpressionStatement",
+        "expression": {
+            "arguments": [
+                {
+                    "type": "CallExpression",
+                    "callee": {
+                        "type": "MemberExpression",
+                        "object": {
+                          "learningbay_type": "string"
+                        },
+                        "property": {
+                            "name": "trim"
+                        }
+                    },
+                    "arguments": []
+                }
+            ]
+        }
+    }
+]

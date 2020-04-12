@@ -1,0 +1,150 @@
+[
+    {
+        "learningbay_knowledge": "http://biki.wiki/learning-bay/knowledge-element/jske3",
+        "type": "ExpressionStatement",
+        "expression": {
+            "type": "CallExpression",
+            "callee": {
+                "type": "MemberExpression",
+                "object": {
+                    "name": "console"
+                },
+                "property": {
+                    "name": "log"
+                }
+            }
+        }
+    },
+    {
+        "learningbay_knowledge": "http://biki.wiki/learning-bay/knowledge-element/jske14",  
+        "type": "ExpressionStatement",
+        "expression": {
+            "arguments": [
+                {
+                    "type": "CallExpression",
+                    "callee": {
+                        "type": "MemberExpression",
+                        "object": {},
+                        "property": {}
+                    },
+                    "arguments": []
+                }
+            ]
+        }
+    },
+    {
+        "learningbay_knowledge": "http://biki.wiki/learning-bay/knowledge-element/jske14",  
+        "type": "ExpressionStatement",
+        "expression": {
+            "arguments": [
+                {
+                    "arguments": [
+                        {
+                            "left": {
+                                "type": "CallExpression",
+                                "callee": {
+                                    "type": "MemberExpression",
+                                    "object": {},
+                                    "property": {}
+                                },
+                                "arguments": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "learningbay_knowledge": "http://biki.wiki/learning-bay/knowledge-element/jske18",
+        "type": "ExpressionStatement",
+        "expression": {
+            "arguments": [
+                {
+                    "type": "CallExpression",
+                    "callee": {
+                        "type": "MemberExpression",
+                        "object": {
+                            "name": "Math"
+                        },
+                        "property": {
+                            "name": "floor"
+                        }
+                    },
+                    "arguments": [
+                        {
+                            "type": "BinaryExpression",
+                            "operator": "*",
+                            "left": {
+                                "type": "CallExpression",
+                                "callee": {
+                                    "type": "MemberExpression",
+                                    "object": {
+                                        "name": "Math"
+                                    },
+                                    "property": {
+                                        "name": "random"
+                                    }
+                                },
+                                "arguments": []
+                            },
+                            "right": {
+                                "value": 100
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "learningbay_knowledge": "http://biki.wiki/learning-bay/knowledge-element/jske18",
+        "type": "ExpressionStatement",
+        "expression": {
+            "arguments": [
+                {
+                    "type": "CallExpression",
+                    "callee": {
+                        "type": "MemberExpression",
+                        "object": {
+                            "name": "Math"
+                        },
+                        "property": {
+                            "name": "ceil"
+                        }
+                    },
+                    "arguments": [
+                        {
+                            "value": 43.8
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "learningbay_knowledge": "http://biki.wiki/learning-bay/knowledge-element/jske17",
+        "type": "ExpressionStatement",
+        "expression": {
+            "arguments": [
+                {
+                    "type": "CallExpression",
+                    "callee": {
+                        "type": "MemberExpression",
+                        "object": {
+                            "name": "Number"
+                        },
+                        "property": {
+                            "name": "isInteger"
+                        }
+                    },
+                    "arguments": [
+                        {
+                            "value": 2017
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+]

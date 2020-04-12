@@ -1,12 +1,12 @@
 const fs      = require('fs');
 const path    = require('path');
-const extname = path.extname;
 const session = require('koa-generic-session');
 const Store   = require('koa-redis');
 const axios   = require("axios");
 
 const Config  = require('./config');
 const { analyse, stat } = require('./utils');
+const Message = require('./message');
 
 function setSessionRoute(app, router) {
   app.keys = ['login secret', 'learningbay'] // 加密密钥
@@ -18,7 +18,7 @@ function setSessionRoute(app, router) {
   router
     .post('/login', async ctx => {
       if (ctx.session.userInfo) {
-        ctx.body = { res: false, data: "您已登录" }
+        ctx.body = { res: false, data: Message.login }
       } else {
         const resp = await axios.post(`${Config.fusekiURL}/user/login`, ctx.request.body, {headers: {'Content-Type': 'application/json'}});
         const { res, data } = resp.data;
@@ -52,7 +52,7 @@ function setSessionRoute(app, router) {
     // 分析代码
     .post('/code/analyse', async ctx => {
       if (!ctx.session.userInfo) {
-        ctx.body = { res: false, data: "未登录，无法解锁此功能" };
+        ctx.body = { res: false, data: Message.logout };
         return;
       }
       const { code, testFilename } = ctx.request.body;
@@ -89,7 +89,7 @@ function setSessionRoute(app, router) {
         const { data } = await axios.get(Config.fusekiURL+"/recommend", {params: {uri: userUri, courseUri}});
         ctx.body = data;
       } else {
-        ctx.body = { res: false, data: "未登录，无法解锁此功能" }
+        ctx.body = { res: false, data: Message.logout }
       }
     })
     .get('/recommend/review', async ctx => {
@@ -99,12 +99,12 @@ function setSessionRoute(app, router) {
         const { data } = await axios.get(Config.fusekiURL+"/recommend/review", {params: {uri: userUri, courseUri}});
         ctx.body = data;
       } else {
-        ctx.body = { res: false, data: "未登录，无法解锁此功能" }
+        ctx.body = { res: false, data: Message.logout }
       }
     })
     .post('/user/punch-in', async ctx => {
       if (!ctx.session.userInfo) {
-        ctx.body = { res: false, data: "未登录，无法解锁此功能" };
+        ctx.body = { res: false, data: Message.logout };
         return;
       }
       const params = ctx.request.body;

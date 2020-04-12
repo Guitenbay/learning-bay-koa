@@ -1,0 +1,78 @@
+[
+    {
+        "learningbay_knowledge": "http://biki.wiki/learning-bay/knowledge-element/jske3",
+        "type": "ExpressionStatement",
+        "expression": {
+            "type": "CallExpression",
+            "callee": {
+                "type": "MemberExpression",
+                "object": {
+                    "name": "console"
+                },
+                "property": {
+                    "name": "log"
+                }
+            }
+        }
+    },
+    {
+        "learningbay_knowledge": "http://biki.wiki/learning-bay/knowledge-element/jske8",
+        "type": "ExpressionStatement",
+        "expression": {
+            "arguments": [
+                {
+                    "type": "Literal",
+                    "value": "JavaScript"
+                }
+            ]
+        }
+    },
+    {
+        "learningbay_knowledge": "http://biki.wiki/learning-bay/knowledge-element/jske7",
+        "type": "ExpressionStatement",
+        "expression": {
+            "arguments": [
+                {
+                    "type": "Literal",
+                    "value": 2011
+                }
+            ]
+        }
+    },
+    {
+        "learningbay_knowledge": "http://biki.wiki/learning-bay/knowledge-element/jske8",
+        "type": "ExpressionStatement",
+        "expression": {
+            "arguments": [
+                {
+                    "type": "Literal",
+                    "value": "Woohoo! I love to code! #learningbay"
+                }
+            ]
+        }
+    },
+    {
+        "learningbay_knowledge": "http://biki.wiki/learning-bay/knowledge-element/jske8",
+        "type": "ExpressionStatement",
+        "expression": {
+            "arguments": [
+                {
+                    "type": "Literal",
+                    "value": 20.49
+                }
+            ]
+        }
+    },
+    {
+        "learningbay_knowledge": "http://biki.wiki/learning-bay/knowledge-element/jske9",
+        "type": "ExpressionStatement",
+        "expression": {
+            "arguments": [
+                {
+                    "type": "Literal",
+                    "value": true
+                }
+            ]
+        }
+    }
+]

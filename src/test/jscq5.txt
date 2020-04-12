@@ -1,0 +1,61 @@
+[
+    {
+        "learningbay_knowledge": "http://biki.wiki/learning-bay/knowledge-element/jske3",
+        "type": "ExpressionStatement",
+        "expression": {
+            "type": "CallExpression",
+            "callee": {
+                "type": "MemberExpression",
+                "object": {
+                    "name": "console"
+                },
+                "property": {
+                    "name": "log"
+                }
+            }
+        }
+    },
+    {
+        "learningbay_knowledge": "http://biki.wiki/learning-bay/knowledge-element/jske11",
+        "type": "ExpressionStatement",
+        "expression": {
+            "arguments": [
+                {
+                    "type": "BinaryExpression",
+                    "operator": "+",
+                    "left": {
+                        "value": "Hello"
+                    },
+                    "right": {
+                        "value": "World"
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "learningbay_knowledge": "http://biki.wiki/learning-bay/knowledge-element/jske11",
+        "type": "ExpressionStatement",
+        "expression": {
+            "arguments": [
+                {
+                    "type": "BinaryExpression",
+                    "operator": "+",
+                    "left": {
+                        "type": "BinaryExpression",
+                        "operator": "+",
+                        "left": {
+                            "value": "Hello"
+                        },
+                        "right": {
+                            "value": " "
+                        }
+                    },
+                    "right": {
+                        "value": "World"
+                    }
+                }
+            ]
+        }
+    }
+]
