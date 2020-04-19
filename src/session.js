@@ -59,7 +59,7 @@ function setSessionRoute(app, router) {
       const fpath = path.join(__dirname, "/test/", testFilename);
       const fstat = await stat(fpath);
       if (!fstat.isFile()) {
-        ctx.body = { res: false };
+        ctx.body = { res: false, data: Message.fileExistError };
         return;
       }
       const checks = JSON.parse(fs.readFileSync(fpath));
@@ -76,7 +76,7 @@ function setSessionRoute(app, router) {
       const params = Object.assign({ userUri }, { knowledgeStates });
       const resp = await axios.post(Config.fusekiURL+"/user/knowledge-state/code", params, {headers: {'Content-Type': 'application/json'}});
       if (!resp.data.res) {
-        ctx.body = { res: false };
+        ctx.body = { res: false, data: Message.userStateError };
         return;
       }
       ctx.body = { res: true, data: { result: mismatchedKeList.length === 0 } };
