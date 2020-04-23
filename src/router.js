@@ -22,12 +22,22 @@ router
       ctx.body = { res: false };
     }
   })
+  .put('/video/:filename', async ctx => {
+    try {
+      fs.writeFileSync(path.join(__dirname, `/video/${ctx.params.filename}`), '');
+    } catch (error) {
+      console.error(error);
+      ctx.body = {res: false};
+      return;
+    }
+    ctx.body = { res: true };
+  })
   .post('/video/:filename', async ctx => {
     const buffer = await Utils.getBuffer(ctx);
     const content = Base64.decode(buffer.toString('utf-8'));
     try {
       fs.appendFileSync(path.join(__dirname, `/video/${ctx.params.filename}`), `${content}\r\n`);
-    } catch(err) { console.error(err); ctx.body = {res: false} }
+    } catch(err) { console.error(err); ctx.body = {res: false}; return; }
     ctx.body = { res: true };
   })
   .get('/audio/:filename', async ctx => {
