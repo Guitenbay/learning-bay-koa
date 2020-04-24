@@ -7,6 +7,7 @@ const Http    = require('http')
 const router  = require('./router');
 const io      = require('./socket');
 const setSessionRouter = require('./session');
+const Config  = require('./config');
 
 const app     = new Koa();
 
@@ -14,7 +15,7 @@ const app     = new Koa();
 app.use(logger());
 app.use(cors({
   credentials: true,
-  origin: 'http://localhost:8080'
+  origin: Config.corsConfig.origin
 }));
 
 app.use(koaBody({
