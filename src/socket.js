@@ -2,15 +2,16 @@ const socket  = require('socket.io');
 const fs      = require('fs');
 const path    = require('path');
 const cp      = require('child_process');
+const logger  = require('./log4').socketLogger;
 
 const io = socket();
 
 io.on('connection', socket => {
-  console.log(`client ${socket.id} connected!`);
-  socket.on('disconnect', () => console.log(`client ${socket.id} disconnected!`));
+  logger.info(`client ${socket.id} connected!`);
+  socket.on('disconnect', () => logger.info(`client ${socket.id} disconnected!`));
   
   socket.on('code', content => {
-    console.log(`client ${socket.id} emit code message.`);
+    logger.info(`client ${socket.id} emit code message.`);
     const { extname, filename, uid, codeContent } = content;
     const totalname = `${filename}-${uid}.${extname}`;
     const totalPath = path.join(__dirname, `/cache-code/${totalname}`);
