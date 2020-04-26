@@ -17,7 +17,7 @@ const app     = new Koa();
 app.use(httpLogger());
 app.use(cors({
   credentials: true,
-  origin: Config.corsConfig.origin
+  origin: Config.corsConf.origin
 }));
 
 app.use(koaBody({

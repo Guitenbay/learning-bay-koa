@@ -17,8 +17,7 @@
     "socket.io": "^2.3.0"
   },
   "scripts": {
-    "start": "node ./src/index.js",
-    "redis": "cd redis && redis-server.exe redis.windows.conf"
+    "start": "node ./src/index.js"
   },
   "author": "Guitenbay",
   "license": "ISC",

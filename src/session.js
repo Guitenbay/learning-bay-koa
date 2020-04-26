@@ -13,7 +13,7 @@ function setSessionRoute(app, router) {
   app.use(session({
     key: 'koa:sess',
     ttl: 3600000, // 单位 ms ，设置有效时间 1 小时
-    store: new Store()
+    store: new Store(Config.redisConf)
   }))
   router
     .post('/login', async ctx => {
