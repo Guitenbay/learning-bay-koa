@@ -9,14 +9,20 @@
 ## Usage
 
 1. Install
-				
-		npm i
+
+	- 安装依赖				
+		
+			npm i
+
+	- 下载 redis
+
+		[download redis](https://redis.io/)
 
 2. Run
 
 	- 先开启 redis 数据库
 
-			npm run redis
+			redis-server
 
 	- 再运行 Koa
 
