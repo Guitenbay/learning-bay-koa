@@ -1,6 +1,6 @@
 const Koa     = require('koa');
 const logger  = require('koa-logger');
-const cors    = require('koa-cors');
+const cors    = require('@koa/cors');
 const koaBody = require('koa-body');
 const Http    = require('http')
 
