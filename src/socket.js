@@ -26,7 +26,7 @@ io.on('connection', socket => {
         cwd: path.join(__dirname, `/cache-code/`), detached: true, encoding: 'utf8'
       });
       child.stdout.on("data", (data) => {
-        io.emit('code-output', data.toString('utf-8'))
+        socket.emit('code-output', data.toString('utf-8'))
       });
       // 报错时
       let buffer = '';
@@ -37,19 +37,19 @@ io.on('connection', socket => {
         if (rowList.length > 5) {
           const arr = rowList[5].match(/^[^\(\)]*\([^\(\)]*:(\d+):(\d+)\)/);
           rowList[4] += ` in line ${arr[1]}, column ${arr[2]}`;
-          io.emit('code-output', rowList.slice(1, 5).join("\n"));
+          socket.emit('code-output', rowList.slice(1, 5).join("\n"));
         } else {
-          io.emit('code-output', buffer);
+          socket.emit('code-output', buffer);
         }
       })
       // 子进程退出
       child.on('exit', function(code, signal){
-        io.emit('code-exit');
+        socket.emit('code-exit');
         // 删除文件
         fs.unlinkSync(totalPath);
       });
     } catch(error) {
-      io.emit('code-output', error.toString());
+      socket.emit('code-output', error.toString());
     }
   })
 })
