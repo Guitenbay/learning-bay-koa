@@ -12,6 +12,7 @@ const corsConf = {
 
 const redisConf = {
   host: 'localhost'
+  // host: '139.196.179.105'
 }
 
 module.exports = { fusekiURL, corsConf, redisConf };
