@@ -6,7 +6,7 @@
   "dependencies": {
     "@koa/cors": "^2.2.3",
     "@koa/router": "^8.0.7",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "http": "0.0.0",
     "js-base64": "^2.5.1",
     "koa": "^2.11.0",
