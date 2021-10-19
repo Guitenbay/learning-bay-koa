@@ -15,7 +15,7 @@
     "koa-log4": "^2.3.2",
     "koa-redis": "^4.0.1",
     "socket.io": "^2.3.0",
-    "vm2": "^3.9.1"
+    "vm2": "^3.9.4"
   },
   "scripts": {
     "start": "node ./src/index.js"
